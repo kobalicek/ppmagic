@@ -1,0 +1,32 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - clang
+  - gcc
+
+matrix:
+  exclude:
+    - os: osx
+      compiler: gcc
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository ppa:kubuntu-ppa/backports -y; fi;
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq update; fi;
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq install cmake; fi;
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake --version
+  - cmake .. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+  - cd ..
+
+script:
+  - cd build
+  - make
+  - cd ..
+  - ./build/ppmagic_test
