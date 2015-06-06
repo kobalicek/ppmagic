@@ -51,13 +51,18 @@
 #define _PP_DUMMY(...) dummy,##__VA_ARGS__
 #endif
 
-// Concatenate two tokens `_A` and `_B` together by using `##` operator.
+// Concatenate two tokens `_A` and `_B` by using `##` operator.
 //
 // Examples:
 //   `_PP_CONCAT(A, B)` -> AB
 #define _PP_CONCAT(_A, _B) _A##_B
 
 // Negate an expression `_X` passed to `_PP_NOT(_X)`.
+//
+// Examples:
+//   `_PP_NOT(0)`  -> `1`
+//   `_PP_NOT(1)`  -> `0`
+//   `_PP_NOT(42)` -> `0`
 #if defined(_PP_MSVC_BEHAVIOR)
 #define _PP_IS(...) _PP_INDIRECT(_PP_2(__VA_ARGS__, 0))
 #else
@@ -68,7 +73,7 @@
 #define _PP_NOT(_X) _PP_IS(_PP_CONCAT(_PP_NOT_, _X))
 #define _PP_NOT_0 _PP_PROBE()
 
-// Convert an expression `_X` into a boolean value `0` or `1` (preprocessor).
+// Convert an expression `_X` to a boolean value `0` or `1`.
 //
 // Examples:
 //   `_PP_BOOL(0)`  -> `0`
@@ -77,12 +82,12 @@
 #define _PP_BOOL(_X) _PP_NOT(_PP_NOT(_X))
 
 // Pure C/C++ preprocessor-based `_PP_IF_ELSE(_Expression)(IsTaken)(NotTaken)`
-// implementation that can be implemented to conditionally compile code based
-// on a condition known at a preprocessing time. Maybe the syntax is not the
-// best possible, but it works and it doesn't violate the standard at all.
+// implementation that can be used to conditionally compile code based on a
+// condition known during preprocessing. Maybe the syntax is not the  best
+// possible, but it works and it doesn't violate the standard at all.
 //
 // The implementation is based on <http://jhnet.co.uk/articles/cpp_magic> and
-// was fixed to work also with MSVC, which incorrectly expands __VA_ARGS__.
+// was fixed to work also with MSVC, which incorrectly expands `__VA_ARGS__`.
 #define _PP_IF_ELSE(_Expression) _PP_IF_ELSE_INTERNAL(_PP_BOOL(_Expression))
 #define _PP_IF_ELSE_INTERNAL(_Expression) _PP_CONCAT(_PP_IF_ELSE_INTERNAL_, _Expression)
 
@@ -91,8 +96,8 @@
 #define _PP_IF_ELSE_INTERNAL_ELSE_0(...) __VA_ARGS__
 #define _PP_IF_ELSE_INTERNAL_ELSE_1(...)
 
-// Get the count of `__VA_ARGS__` list of arguments. Should work well with C99
-// compilers and MSVC, not sure about others, maybe some fixes will be needed.
+// Count the number of `__VA_ARGS__` arguments. Should work with C99 compilers
+// and MSVC, not sure about others, maybe some fixes will be needed.
 #define _PP_COUNT(...) _PP_COUNT_INTERNAL_0((_PP_DUMMY(__VA_ARGS__),\
   63,62,61,60,59,58,57,56,\
   55,54,53,52,51,50,49,48,\
@@ -114,7 +119,7 @@
   _57,_58,_59,_60,_61,_62,_63,_64,_X,...) _X
 
 
-// Convert the given token(s) to string form at preprocessor time.
+// Convert the given token(s) to a string form at a preprocessor time.
 #define _PP_STRINGIFY(...) _PP_STRINGIFY_INTERNAL(__VA_ARGS__)
 #define _PP_STRINGIFY_INTERNAL(...) _PP_INDIRECT(#__VA_ARGS__)
 // ----------------------------------------------------------------------------
