@@ -88,9 +88,18 @@
 //
 // The implementation is based on <http://jhnet.co.uk/articles/cpp_magic> and
 // was fixed to work also with MSVC, which incorrectly expands `__VA_ARGS__`.
-#define _PP_IF_ELSE(_Expression) _PP_IF_ELSE_INTERNAL(_PP_BOOL(_Expression))
-#define _PP_IF_ELSE_INTERNAL(_Expression) _PP_CONCAT(_PP_IF_ELSE_INTERNAL_, _Expression)
+//
+// Example:
+//   `_PP_IF(_Exp)(_EvaluatedIfTrue)`
+//   `_PP_IF_ELSE(_Exp)(_EvaluatedIfTrue)(_EvaluatedIfFalse)`
+#define _PP_IF(_Exp) _PP_IF_INTERNAL(_PP_BOOL(_Exp))
+#define _PP_IF_ELSE(_Exp) _PP_IF_ELSE_INTERNAL(_PP_BOOL(_Exp))
 
+#define _PP_IF_INTERNAL(_Exp) _PP_CONCAT(_PP_IF_INTERNAL_,_Exp)
+#define _PP_IF_INTERNAL_0(...)
+#define _PP_IF_INTERNAL_1(...) __VA_ARGS__
+
+#define _PP_IF_ELSE_INTERNAL(_Exp) _PP_CONCAT(_PP_IF_ELSE_INTERNAL_, _Exp)
 #define _PP_IF_ELSE_INTERNAL_0(...) _PP_IF_ELSE_INTERNAL_ELSE_0
 #define _PP_IF_ELSE_INTERNAL_1(...) __VA_ARGS__ _PP_IF_ELSE_INTERNAL_ELSE_1
 #define _PP_IF_ELSE_INTERNAL_ELSE_0(...) __VA_ARGS__

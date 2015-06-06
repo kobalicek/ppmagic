@@ -94,8 +94,12 @@ int main(int argc, char* argv[]) {
   expectStr(_PP_STRINGIFY(_PP_BOOL(42)), "1");
 
   // --------------------------------------------------------------------------
-  // [_PP_IF_ELSE]
+  // [_PP_IF / _PP_IF_ELSE]
   // --------------------------------------------------------------------------
+
+  expectInt(0 _PP_IF(0)(-1),  0);
+  expectInt(0 _PP_IF(1)(-1), -1);
+  expectInt(0 _PP_IF(2)(-1), -1);
 
   expectInt(_PP_IF_ELSE(0)(1)(0), 0);
   expectInt(_PP_IF_ELSE(1)(1)(0), 1);
