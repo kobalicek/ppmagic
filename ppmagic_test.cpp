@@ -113,28 +113,28 @@ int main(int argc, char* argv[]) {
   // [_PP_COUNT]
   // --------------------------------------------------------------------------
 
-  expectInt(_PP_COUNT(), 0);
-  expectInt(_PP_COUNT(0), 1);
-  expectInt(_PP_COUNT(0, 1), 2);
+  expectInt(_PP_COUNT()       , 0);
+  expectInt(_PP_COUNT(0)      , 1);
+  expectInt(_PP_COUNT(0, 1)   , 2);
   expectInt(_PP_COUNT(0, 1, 2), 3);
 
-  expectStr(_PP_STRINGIFY(_PP_COUNT()), "0");
-  expectStr(_PP_STRINGIFY(_PP_COUNT(0)), "1");
-  expectStr(_PP_STRINGIFY(_PP_COUNT(0, 1)), "2");
+  expectStr(_PP_STRINGIFY(_PP_COUNT())       , "0");
+  expectStr(_PP_STRINGIFY(_PP_COUNT(0))      , "1");
+  expectStr(_PP_STRINGIFY(_PP_COUNT(0, 1))   , "2");
   expectStr(_PP_STRINGIFY(_PP_COUNT(0, 1, 2)), "3");
 
   // --------------------------------------------------------------------------
   // [_PP_HAS_ARG]
   // --------------------------------------------------------------------------
 
-  expectInt(_PP_HAS_ARG(), 0);
-  expectInt(_PP_HAS_ARG(0), 1);
-  expectInt(_PP_HAS_ARG(0, 1), 1);
+  expectInt(_PP_HAS_ARG()       , 0);
+  expectInt(_PP_HAS_ARG(0)      , 1);
+  expectInt(_PP_HAS_ARG(0, 1)   , 1);
   expectInt(_PP_HAS_ARG(0, 1, 2), 1);
 
-  expectStr(_PP_STRINGIFY(_PP_HAS_ARG()), "0");
-  expectStr(_PP_STRINGIFY(_PP_HAS_ARG(0)), "1");
-  expectStr(_PP_STRINGIFY(_PP_HAS_ARG(0, 1)), "1");
+  expectStr(_PP_STRINGIFY(_PP_HAS_ARG())       , "0");
+  expectStr(_PP_STRINGIFY(_PP_HAS_ARG(0))      , "1");
+  expectStr(_PP_STRINGIFY(_PP_HAS_ARG(0, 1))   , "1");
   expectStr(_PP_STRINGIFY(_PP_HAS_ARG(0, 1, 2)), "1");
 
   // --------------------------------------------------------------------------
@@ -144,24 +144,31 @@ int main(int argc, char* argv[]) {
 #define TEST_PP_COUNT_INDIRECT(...) \
   _PP_COUNT(__VA_ARGS__)
 
-  expectInt(TEST_PP_COUNT_INDIRECT(), 0);
-  expectInt(TEST_PP_COUNT_INDIRECT(0), 1);
-  expectInt(TEST_PP_COUNT_INDIRECT(0, 1), 2);
+  expectInt(TEST_PP_COUNT_INDIRECT()       , 0);
+  expectInt(TEST_PP_COUNT_INDIRECT(0)      , 1);
+  expectInt(TEST_PP_COUNT_INDIRECT(0, 1)   , 2);
   expectInt(TEST_PP_COUNT_INDIRECT(0, 1, 2), 3);
 
 #define TEST_PP_IF_COUNT(...) \
   _PP_IF(_PP_COUNT(__VA_ARGS__))
 
-  expectInt(0 TEST_PP_IF_COUNT()(-1),  0);
-  expectInt(0 TEST_PP_IF_COUNT(1)(-1), -1);
+  expectInt(0 TEST_PP_IF_COUNT()(-1)    ,  0);
+  expectInt(0 TEST_PP_IF_COUNT(1)(-1)   , -1);
   expectInt(0 TEST_PP_IF_COUNT(1, 2)(-1), -1);
 
 #define TEST_PP_IF_HAS_ARG(...) \
   _PP_IF(_PP_HAS_ARG(__VA_ARGS__))
 
-  expectInt(0 TEST_PP_IF_HAS_ARG()(-1),  0);
-  expectInt(0 TEST_PP_IF_HAS_ARG(1)(-1), -1);
+  expectInt(0 TEST_PP_IF_HAS_ARG()(-1)    ,  0);
+  expectInt(0 TEST_PP_IF_HAS_ARG(1)(-1)   , -1);
   expectInt(0 TEST_PP_IF_HAS_ARG(1, 2)(-1), -1);
+
+#define TEST_PP_IF_ELSE_HAS_ARG(...) \
+  _PP_IF_ELSE(_PP_HAS_ARG(__VA_ARGS__))
+
+  expectInt(TEST_PP_IF_ELSE_HAS_ARG()(1)(0)    , 0);
+  expectInt(TEST_PP_IF_ELSE_HAS_ARG(1)(1)(0)   , 1);
+  expectInt(TEST_PP_IF_ELSE_HAS_ARG(1, 2)(1)(0), 1);
 
   // --------------------------------------------------------------------------
   // [End]
