@@ -124,6 +124,25 @@ int main(int argc, char* argv[]) {
   expectStr(_PP_STRINGIFY(_PP_COUNT(0, 1, 2)), "3");
 
   // --------------------------------------------------------------------------
+  // [Combining]
+  // --------------------------------------------------------------------------
+
+#define TEST_PP_COUNT_INDIRECT(...) \
+  _PP_COUNT(__VA_ARGS__)
+
+  expectInt(TEST_PP_COUNT_INDIRECT(), 0);
+  expectInt(TEST_PP_COUNT_INDIRECT(0), 1);
+  expectInt(TEST_PP_COUNT_INDIRECT(0, 1), 2);
+  expectInt(TEST_PP_COUNT_INDIRECT(0, 1, 2), 3);
+
+#define TEST_PP_IF_HAS_ARGS(...) \
+  _PP_IF(_PP_COUNT(__VA_ARGS__))
+
+  expectInt(0 TEST_PP_IF_HAS_ARGS()(-1),  0);
+  expectInt(0 TEST_PP_IF_HAS_ARGS(1)(-1), -1);
+  expectInt(0 TEST_PP_IF_HAS_ARGS(1, 2)(-1), -1);
+
+  // --------------------------------------------------------------------------
   // [End]
   // --------------------------------------------------------------------------
 
