@@ -140,6 +140,16 @@
 //   `_PP_HAS_ARG(1, 2)` -> `1`
 #define _PP_HAS_ARG(...) _PP_INDIRECT(_PP_BOOL(_PP_COUNT(__VA_ARGS__)))
 
+// Expand to `, __VA_ARGS__` if `__VA_ARGS__` contains at least one argument,
+// expands to `` otherwise. This is basically a workaround to having a dangling
+// comma after `, __VA_ARGS__` expansion.
+//
+// Example:
+//   `_PP_COMMA_VA()`     -> ``
+//   `_PP_COMMA_VA(A)`    -> `, A`
+//   `_PP_COMMA_VA(A, B)` -> `, A, B`
+#define _PP_COMMA_VA(...) _PP_IF(_PP_HAS_ARG(__VA_ARGS__))(, __VA_ARGS__)
+
 // Convert the given token(s) to a string form at a preprocessor time.
 #define _PP_STRINGIFY(...) _PP_STRINGIFY_INTERNAL(__VA_ARGS__)
 #define _PP_STRINGIFY_INTERNAL(...) _PP_INDIRECT(#__VA_ARGS__)
