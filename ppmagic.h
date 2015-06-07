@@ -107,6 +107,11 @@
 
 // Count the number of `__VA_ARGS__` arguments. Should work with C99 compilers
 // and MSVC, not sure about others, maybe some fixes will be needed.
+//
+// Example:
+//   `_PP_COUNT()`     -> `0`
+//   `_PP_COUNT(1)`    -> `1`
+//   `_PP_COUNT(1, 2)` -> `2`
 #define _PP_COUNT(...) _PP_INDIRECT(_PP_COUNT_INTERNAL_0((_PP_DUMMY(__VA_ARGS__),\
   63,62,61,60,59,58,57,56,\
   55,54,53,52,51,50,49,48,\
@@ -126,6 +131,14 @@
   _41,_42,_43,_44,_45,_46,_47,_48,\
   _49,_50,_51,_52,_53,_54,_55,_56,\
   _57,_58,_59,_60,_61,_62,_63,_64,_X,...) _X
+
+// Get whether the `...` contains one or more argument.
+//
+// Example:
+//   `_PP_HAS_ARG()`     -> `0`
+//   `_PP_HAS_ARG(1)`    -> `1`
+//   `_PP_HAS_ARG(1, 2)` -> `1`
+#define _PP_HAS_ARG(...) _PP_INDIRECT(_PP_BOOL(_PP_COUNT(__VA_ARGS__)))
 
 // Convert the given token(s) to a string form at a preprocessor time.
 #define _PP_STRINGIFY(...) _PP_STRINGIFY_INTERNAL(__VA_ARGS__)
