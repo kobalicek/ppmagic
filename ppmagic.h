@@ -20,7 +20,7 @@
 // Just in case there are other compilers relying on such behavior or VS team
 // fixed this issue in some future version.
 #if defined(_MSC_VER)
-#define _PP_MSVC_BEHAVIOR
+# define _PP_MSVC_BEHAVIOR
 #endif // _MSC_VER
 
 // Select Nth element from `__VA_ARGS__` list of arguments and forget about
@@ -42,13 +42,13 @@
 // to simplify dangling comma handling in case __VA_ARGS__ is empty.
 //
 // Examples:
-//   `_PP_DUMMY()`     -> `dummy`
-//   `_PP_DUMMY(0)`    -> `dummy, 0`
-//   `_PP_DUMMY(0, 1)` -> `dummy, 0, 1`
+//   `_PP_DUMMY_VA()`     -> `dummy`
+//   `_PP_DUMMY_VA(0)`    -> `dummy, 0`
+//   `_PP_DUMMY_VA(0, 1)` -> `dummy, 0, 1`
 #if defined(_PP_MSVC_BEHAVIOR)
-#define _PP_DUMMY(...) dummy,__VA_ARGS__
+# define _PP_DUMMY_VA(...) dummy,__VA_ARGS__
 #else
-#define _PP_DUMMY(...) dummy,##__VA_ARGS__
+# define _PP_DUMMY_VA(...) dummy,##__VA_ARGS__
 #endif
 
 // Concatenate two tokens `_A` and `_B` by using `##` operator.
@@ -64,9 +64,9 @@
 //   `_PP_NOT(1)`  -> `0`
 //   `_PP_NOT(42)` -> `0`
 #if defined(_PP_MSVC_BEHAVIOR)
-#define _PP_IS(...) _PP_INDIRECT(_PP_2(__VA_ARGS__, 0))
+# define _PP_IS(...) _PP_INDIRECT(_PP_2(__VA_ARGS__, 0))
 #else
-#define _PP_IS(...) _PP_2(__VA_ARGS__, 0)
+# define _PP_IS(...) _PP_2(__VA_ARGS__, 0)
 #endif
 #define _PP_PROBE() ~, 1
 
@@ -89,7 +89,7 @@
 // The implementation is based on <http://jhnet.co.uk/articles/cpp_magic> and
 // was fixed to work also with MSVC, which incorrectly expands `__VA_ARGS__`.
 //
-// Example:
+// Examples:
 //   `_PP_IF(_Exp)(_EvaluatedIfTrue)`
 //   `_PP_IF_ELSE(_Exp)(_EvaluatedIfTrue)(_EvaluatedIfFalse)`
 #define _PP_IF(_Exp) _PP_IF_INTERNAL(_PP_BOOL(_Exp))
@@ -108,11 +108,11 @@
 // Count the number of `__VA_ARGS__` arguments. Should work with C99 compilers
 // and MSVC, not sure about others, maybe some fixes will be needed.
 //
-// Example:
-//   `_PP_COUNT()`     -> `0`
-//   `_PP_COUNT(1)`    -> `1`
-//   `_PP_COUNT(1, 2)` -> `2`
-#define _PP_COUNT(...) _PP_INDIRECT(_PP_COUNT_INTERNAL_0((_PP_DUMMY(__VA_ARGS__),\
+// Examples:
+//   `_PP_COUNT_VA()`     -> `0`
+//   `_PP_COUNT_VA(1)`    -> `1`
+//   `_PP_COUNT_VA(1, 2)` -> `2`
+#define _PP_COUNT_VA(...) _PP_INDIRECT(_PP_COUNT_VA_INTERNAL_0((_PP_DUMMY_VA(__VA_ARGS__),\
   63,62,61,60,59,58,57,56,\
   55,54,53,52,51,50,49,48,\
   47,46,45,44,43,42,41,40,\
@@ -121,8 +121,8 @@
   23,22,21,20,19,18,17,16,\
   15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0)))
 
-#define _PP_COUNT_INTERNAL_0(_X) _PP_INDIRECT(_PP_COUNT_INTERNAL_1 _X)
-#define _PP_COUNT_INTERNAL_1(\
+#define _PP_COUNT_VA_INTERNAL_0(_X) _PP_INDIRECT(_PP_COUNT_VA_INTERNAL_1 _X)
+#define _PP_COUNT_VA_INTERNAL_1(\
   _01,_02,_03,_04,_05,_06,_07,_08,\
   _09,_10,_11,_12,_13,_14,_15,_16,\
   _17,_18,_19,_20,_21,_22,_23,_24,\
@@ -134,21 +134,21 @@
 
 // Get whether the `...` contains one or more argument.
 //
-// Example:
-//   `_PP_HAS_ARG()`     -> `0`
-//   `_PP_HAS_ARG(1)`    -> `1`
-//   `_PP_HAS_ARG(1, 2)` -> `1`
-#define _PP_HAS_ARG(...) _PP_INDIRECT(_PP_BOOL(_PP_COUNT(__VA_ARGS__)))
+// Examples:
+//   `_PP_HAS_VA()`     -> `0`
+//   `_PP_HAS_VA(1)`    -> `1`
+//   `_PP_HAS_VA(1, 2)` -> `1`
+#define _PP_HAS_VA(...) _PP_INDIRECT(_PP_BOOL(_PP_COUNT_VA(__VA_ARGS__)))
 
 // Expand to `, __VA_ARGS__` if `__VA_ARGS__` contains at least one argument,
 // expands to `` otherwise. This is basically a workaround to having a dangling
 // comma after `, __VA_ARGS__` expansion.
 //
-// Example:
+// Examples:
 //   `_PP_COMMA_VA()`     -> ``
 //   `_PP_COMMA_VA(A)`    -> `, A`
 //   `_PP_COMMA_VA(A, B)` -> `, A, B`
-#define _PP_COMMA_VA(...) _PP_IF(_PP_HAS_ARG(__VA_ARGS__))(, __VA_ARGS__)
+#define _PP_COMMA_VA(...) _PP_IF(_PP_HAS_VA(__VA_ARGS__))(, __VA_ARGS__)
 
 // Convert the given token(s) to a string form at a preprocessor time.
 #define _PP_STRINGIFY(...) _PP_STRINGIFY_INTERNAL(__VA_ARGS__)

@@ -4,7 +4,7 @@ PPMagic
 C/C++ Preprocessor Magic:
 
   * [Official Repository (kobalicek/ppmagic)](https://github.com/kobalicek/ppmagic)
-  * [Unlicense] (http://unlicense.org)
+  * [Unlicense (unlicense.org)](http://unlicense.org)
 
 Introduction
 ------------
@@ -22,9 +22,9 @@ Macro                        | Description
 `_PP_BOOL(_X)`               | Converts `_X` to a boolean value (`0` or `1`).
 `_PP_COMMA_VA(...)`          | Expands to `, __VA_ARGS__` if `__VA_ARGS__` contains at least one argument.
 `_PP_CONCAT(_A, _B)`         | Concatenates `_A` and `_B` by using `##` operator.
-`_PP_COUNT(...)`             | Counts the number of `__VA_ARGS__` arguments.
-`_PP_DUMMY(...)`             | Prepends `dummy` before `__VA_ARGS__`.
-`_PP_HAS_ARG(...)`           | Expands to `1` if `...` contains one or more argument, otherwise expands to `0`.
+`_PP_COUNT_VA(...)`          | Counts the number of `__VA_ARGS__` arguments.
+`_PP_DUMMY_VA(...)`          | Prepends `dummy` before `__VA_ARGS__`.
+`_PP_HAS_VA(...)`            | Expands to `1` if `...` contains one or more argument, otherwise expands to `0`.
 `_PP_IF(_Exp)(_OnTrue)`      | Expands `_OnTrue` if the expression `_Exp` evaluates to true.
 `_PP_IF_ELSE(_Exp)(_A)(_B)`  | Expands `_A` if the expression `_Exp` evaluates to true, expands `_B` otherwise.
 `_PP_INDIRECT(_X)`           | Expands to `_X`, indirection used by some workarounds.
